@@ -89,7 +89,7 @@ function wrapObserverMeta (
       const componentId = $root.id()
       return {
         componentId,
-        createdAt: Date.now(),
+        createdAt: Date.now()
         // $self: $root.at(`$components.${componentId}`)
       }
     }, [])
