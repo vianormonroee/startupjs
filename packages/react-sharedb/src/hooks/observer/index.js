@@ -7,13 +7,6 @@ import promiseBatcher from './promiseBatcher'
 import $root from '@startupjs/model'
 import { ComponentMetaContext } from './meta'
 
-const DEFAULT_OPTIONS = {
-  forwardRef: false,
-  suspenseProps: {
-    fallback: React.createElement(NullComponent, null, null)
-  }
-}
-
 // TODO: Fix passing options argument in react-native Fast Refresh patch.
 //       It has to properly put the closing bracket.
 function observer (Component, options) {
@@ -93,9 +86,11 @@ function wrapObserverMeta (
 
   function ObserverWrapper (props, ref) {
     var componentMeta = React.useMemo(function () {
+      const componentId = $root.id()
       return {
-        componentId: $root.id(),
-        createdAt: Date.now()
+        componentId,
+        createdAt: Date.now(),
+        // $self: $root.at(`$components.${componentId}`)
       }
     }, [])
     return React.createElement(
@@ -161,8 +156,4 @@ function useForceUpdate () {
 // TODO: Might change to just `useEffect` in future. Don't know which one fits here better yet.
 function useUnmount (fn) {
   React.useLayoutEffect(() => fn, [])
-}
-
-function NullComponent () {
-  return null
 }
